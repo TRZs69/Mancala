@@ -55,6 +55,7 @@ class Ui_Dialog(object):
         icon = QtGui.QIcon("mancala.png")  
         Dialog.setWindowIcon(icon)
         
+        #Win Label
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(380, 30, 658, 300))
         self.label.setObjectName("label")
@@ -77,6 +78,7 @@ class Ui_Dialog(object):
         self.AIvsAI.setGeometry(QtCore.QRect(100, 200, 181, 61))
         self.AIvsAI.setObjectName("startAIvsAI")
         
+        #Restart game
         self.reset = QtWidgets.QPushButton(Dialog)
         self.reset.setGeometry(QtCore.QRect(100, 270, 181, 61))
         self.reset.setObjectName("resetButton")
@@ -121,6 +123,7 @@ class Ui_Dialog(object):
         self.startP2.clicked.connect(self.playClickSound)
         
         self.reset.clicked.connect(self.playClickSound)
+        self.reset.clicked.connect(self.resetGame)
         
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -166,8 +169,22 @@ class Ui_Dialog(object):
             label2.setFont(ft)
             label2.setText(str(len(self.cmdG[i])))
             self.numLabels.append(label2)
+            
         self.paintInit()
         self.firstTurn=True
+
+    def resetGame(self):
+        self.buttonClickSound.play()
+        self.winningLabel.hide()
+    
+        self.startP1.setEnabled(True)
+        self.startP2.setEnabled(True)
+        self.AIvsAI.setEnabled(True)
+
+        if hasattr(self, 'agame'):
+            self.agame.reset()  
+            self.paintInit() 
+
 
     def playClickSound(self):
         """Plays the button click sound."""

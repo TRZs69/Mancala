@@ -33,37 +33,41 @@ class game:
         else:
             return "",action
         
-
 class gameWithGUI(game):
-    def __init__(self,agent1,agent2,UI):
-        self.UI=UI
-        super().__init__(agent1,agent2)
+    def __init__(self, agent1, agent2, UI):
+        self.UI = UI
+        self.stop_iteration = False  
+        super().__init__(agent1, agent2)
 
-    def move(self,action):
-        print("move")
-        f=transitionIterating(self.state,action)
+    def move(self, action):
+        print("Move")
+        f = transitionIterating(self.state, action)
         try:
             while True:
-                self.state,start,end,num=next(f)
-                self.UI.paintMove(start,end,num)
+                if self.stop_iteration:
+                    break  
+                self.state, start, end, num = next(f)
+                self.UI.paintMove(start, end, num)
         except StopIteration:
             time.sleep(1)
-            self.pointer+=1
-            if self.pointer==2:
-                self.pointer=0
+            self.pointer += 1
+            if self.pointer == 2:
+                self.pointer = 0
             if isTerminal(self.state):
                 return self.judge()
             else:
-                return ""    
+                return ""
 
     def play(self):
         print("Play")
-        judge=""
+        judge = ""
         while True:
-            if not(self.agents[self.pointer] is None):
-                action=self.agents[self.pointer].play(self.state) 
-                judge=self.move(action)
-                if judge!="":
+            if self.stop_iteration:
+                break 
+            if not (self.agents[self.pointer] is None):
+                action = self.agents[self.pointer].play(self.state)
+                judge = self.move(action)
+                if judge != "":
                     self.UI.uiTerminal(self.judge())
                     break
             else:
@@ -78,3 +82,14 @@ class gameWithGUI(game):
                 self.UI.uiTerminal(self.judge())
             else:
                 self.play()
+    
+    def reset(self):
+        # Stop the current iteration
+        self.stop_iteration = True 
+        time.sleep(0.1)  # Small delay to ensure ongoing iteration is fully stopped
+        
+        # Reset the game state to the start
+        self.state = startState
+        self.pointer = 0
+        
+        # No need to resume the iteration until the game is started manually
