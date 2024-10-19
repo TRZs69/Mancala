@@ -50,6 +50,11 @@ class Ui_Dialog(object):
         Dialog.resize(1064, 355)
         Dialog.setMinimumSize(QtCore.QSize(1064, 355))
         Dialog.setMaximumSize(QtCore.QSize(1064, 355))
+        
+        #Icon Set
+        icon = QtGui.QIcon("mancala.png")  
+        Dialog.setWindowIcon(icon)
+        
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(380, 30, 658, 300))
         self.label.setObjectName("label")
@@ -114,7 +119,9 @@ class Ui_Dialog(object):
         
         self.startP2.clicked.connect(self.p2Start)
         self.startP2.clicked.connect(self.playClickSound)
-
+        
+        self.reset.clicked.connect(self.playClickSound)
+        
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
