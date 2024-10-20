@@ -41,14 +41,18 @@ class gameWithGUI(game):
         print("Move")
         f = transitionIterating(self.state, action)
         last_pit = None
+        extra_turn = False
         try:
             while True:
                 if self.stop_iteration:
                     break
                 result = next(f)
-                if result[1] is None:
+                if len(result) == 5:
+                    self.state, start, end, num, extra_turn = result
+                else:
+                    self.state, start, end, num = result
+                if start is None:
                     break
-                self.state, start, end, num = result
                 self.UI.paintMove(start, end, num)
                 last_pit = end
         except StopIteration:
@@ -56,19 +60,11 @@ class gameWithGUI(game):
 
         time.sleep(1)
 
-        # Check if the last seed landed in the player's store
-        if self.state[-1]:  # Player 1's turn (True)
-            if last_pit == 6:  # Last seed landed in Player 1's store
-                print("Player 1 gets another turn")
-                return ""  # Player 1 gets another turn
-        else:  # Player 2's turn (False)
-            if last_pit == 13:  # Last seed landed in Player 2's store
-                print("Player 2 gets another turn")
-                return ""  # Player 2 gets another turn
+        if extra_turn:
+            print("Player gets another turn")
+            return ""  # Pemain mendapatkan giliran tambahan
 
-        # Switch turns if the last seed did not land in the store
-        self.pointer = 0 if not self.state[-1] else 1
-        self.state = self.state[:-1] + (not self.state[-1],)
+        self.pointer = 0 if self.state[-1] else 1
 
         if isTerminal(self.state):
             return self.judge()
