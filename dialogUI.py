@@ -41,6 +41,10 @@ class newLabel(QtWidgets.QLabel):
 class Ui_Dialog(object):
     def setupUi(self, Dialog):       
         pygame.mixer.init()
+        
+        self.bgm = pygame.mixer.music.load("bgm.mp3")
+        pygame.mixer.music.set_volume(0)
+        pygame.mixer.music.play()
 
         self.buttonClickSound = pygame.mixer.Sound("click.wav")
         self.buttonClickSound.set_volume(0.75)
@@ -159,7 +163,7 @@ class Ui_Dialog(object):
                 label2 = newLabel(Dialog,self,i)
             else:
                 label2 = newLabel(Dialog,self,i-7)
-            label2.setGeometry(QtCore.QRect(365+leftUp[i][1]-10,20+leftUp[i][0]-5 , 30, 30))
+            label2.setGeometry(QtCore.QRect(360+leftUp[i][1]-10,8+leftUp[i][0]-5 , 50, 50))
             pe = QtGui.QPalette()
             pe.setColor(QtGui.QPalette.WindowText,QtCore.Qt.white)
             label2.setPalette(pe)
