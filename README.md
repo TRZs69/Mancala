@@ -9,3 +9,4 @@ Reference from HarmoniaLeo's Mancala.
 - Added background music  
 - Changed app icon  
 - Optimized UI  
+- Optimized Mancala rules to the game app
